@@ -1,0 +1,11 @@
+# Make
+Makefile
+*.make
+
+# Binary files
+obj/
+bin/
+build/
+
+# Tags
+tags
