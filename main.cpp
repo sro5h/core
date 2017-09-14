@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
 
         std::shared_ptr<Body> staticBody = collider.createCircleBody(64, 100, 100);
         std::shared_ptr<Body> movingBody = collider.createCircleBody(16, 0, 0);
+        movingBody->dynamic = true;
 
         // Timing stuff
         sf::Clock clock;
@@ -41,6 +42,8 @@ int main(int argc, char* argv[])
 
                 while (lag >= MC_PER_TICK) {
                         processInput(movingBody);
+
+                        collider.update();
 
                         lag -= MC_PER_TICK;
                 }
