@@ -6,6 +6,8 @@
 
 #define MC_PER_TICK 15625
 
+void processInput(std::shared_ptr<Body> body);
+
 int main(int argc, char* argv[])
 {
         sf::ContextSettings settings;
@@ -15,7 +17,8 @@ int main(int argc, char* argv[])
 
         Collider collider;
 
-        auto obstacle = collider.createCircleBody(15, 50, 50);
+        std::shared_ptr<Body> staticBody = collider.createCircleBody(64, 100, 100);
+        std::shared_ptr<Body> movingBody = collider.createCircleBody(16, 0, 0);
 
         // Timing stuff
         sf::Clock clock;
@@ -37,6 +40,7 @@ int main(int argc, char* argv[])
                 }
 
                 while (lag >= MC_PER_TICK) {
+                        processInput(movingBody);
 
                         lag -= MC_PER_TICK;
                 }
@@ -51,4 +55,20 @@ int main(int argc, char* argv[])
         }
 
         return 0;
+}
+
+void processInput(std::shared_ptr<Body> body)
+{
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                body->move(-2, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                body->move(2, 0);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                body->move(0, -2);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                body->move(0, 2);
+        }
 }

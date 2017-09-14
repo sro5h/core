@@ -8,6 +8,7 @@
 
 class Body {
 public:
+        virtual void move(float x, float y) = 0;
         virtual void moveTo(float x, float y) = 0;
         virtual float getX() = 0;
         virtual float getY() = 0;
@@ -20,6 +21,12 @@ public:
                 body.r = r;
                 body.p.x = x;
                 body.p.y = y;
+        }
+
+        void move(float x, float y)
+        {
+                body.p.x += x;
+                body.p.y += y;
         }
 
         void moveTo(float x, float y)
