@@ -62,16 +62,23 @@ int main(int argc, char* argv[])
 
 void processInput(std::shared_ptr<Body> body)
 {
+        c2v toMove = c2V(0, 0);
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-                body->move(-2, 0);
+                toMove.x = -1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-                body->move(2, 0);
+                toMove.x = 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-                body->move(0, -2);
+                toMove.y = -1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-                body->move(0, 2);
+                toMove.y = 1;
+        }
+
+        if (toMove.x != 0 || toMove.y != 0) {
+                toMove = c2Mulvs(c2Norm(toMove), 2);
+                body->move(toMove.x, toMove.y);
         }
 }
