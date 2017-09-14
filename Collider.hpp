@@ -5,13 +5,9 @@
 #include <vector>
 #include "tinyc2.h"
 
-namespace sf {
-        class RenderTarget;
-}
-
 class Body {
 public:
-        Body(bool dynamic) : dynamic(dynamic) {}
+        Body(C2_TYPE type, bool dynamic) : type(type), dynamic(dynamic) {}
         virtual ~Body() {}
 
         virtual void move(float x, float y) = 0;
@@ -20,6 +16,9 @@ public:
         virtual float getX() = 0;
         virtual float getY() = 0;
 
+        virtual const void* get() = 0;
+
+        C2_TYPE type;
         bool dynamic;
 };
 
@@ -33,6 +32,8 @@ public:
         float getX();
         float getY();
 
+        const void* get();
+
         c2Circle body;
 };
 
@@ -42,13 +43,12 @@ public:
         std::shared_ptr<CircleBody> createCircleBody(float r, float x, float y);
 
         void update();
-        void draw(sf::RenderTarget& target);
 
 private:
         void solveCollision(std::shared_ptr<Body> a, std::shared_ptr<Body> b,
                         const c2Manifold& manifold);
 
-        std::vector<std::shared_ptr<CircleBody>> circleBodies;
+        std::vector<std::shared_ptr<Body>> bodies;
         // For debug purposes
         std::vector<c2Manifold> manifolds;
 };

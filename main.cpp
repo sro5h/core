@@ -2,6 +2,7 @@
 #define TINYC2_IMPL
 #include "tinyc2.h"
 #undef TINYC2_IMPL
+#include "Tinyc2Debug.hpp"
 #include "Collider.hpp"
 
 #define MC_PER_TICK 15625
@@ -15,10 +16,11 @@ int main(int argc, char* argv[])
 
         sf::RenderWindow window(sf::VideoMode(500, 500), "App", sf::Style::Default, settings);
 
+        Tinyc2Debug debug(window);
         Collider collider;
 
-        std::shared_ptr<Body> staticBody = collider.createCircleBody(64, 100, 100);
-        std::shared_ptr<Body> movingBody = collider.createCircleBody(16, 0, 0);
+        auto staticBody = collider.createCircleBody(64, 100, 100);
+        auto movingBody = collider.createCircleBody(16, 0, 0);
         movingBody->dynamic = true;
 
         // Timing stuff
@@ -53,7 +55,8 @@ int main(int argc, char* argv[])
                 window.setView(view);
 
                 window.clear(sf::Color(30, 30, 30));
-                collider.draw(window);
+                debug.draw(staticBody->body);
+                debug.draw(movingBody->body);
                 window.display();
         }
 

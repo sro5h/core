@@ -1,10 +1,7 @@
 #include "Collider.hpp"
 
-#include <SFML/Graphics/RenderTarget.hpp>
-#include "Tinyc2Debug.hpp"
-
 CircleBody::CircleBody(float r, float x, float y, bool dynamic)
-        : Body(dynamic)
+        : Body(C2_CIRCLE, dynamic)
 {
         body.r = r;
         body.p.x = x;
@@ -33,13 +30,18 @@ float CircleBody::getY()
         return body.p.y;
 }
 
+const void* CircleBody::get()
+{
+        return &body;
+}
+
 
 std::shared_ptr<CircleBody> Collider::createCircleBody(float r, float x,
                 float y)
 {
         auto body = std::make_shared<CircleBody>(r, x, y);
 
-        circleBodies.push_back(body);
+        bodies.push_back(body);
         return body;
 }
 
@@ -47,13 +49,14 @@ void Collider::update()
 {
         manifolds.clear();
 
-        for (int i = 0; i < circleBodies.size(); ++i) {
-                for (int j = i + 1; j < circleBodies.size(); ++j) {
-                        auto a = circleBodies[i];
-                        auto b = circleBodies[j];
+        for (int i = 0; i < bodies.size(); ++i) {
+                for (int j = i + 1; j < bodies.size(); ++j) {
+                        auto a = bodies[i];
+                        auto b = bodies[j];
 
                         c2Manifold manifold;
-                        c2CircletoCircleManifold(a->body, b->body,
+                        c2Collide(a->get(), nullptr, a->type,
+                                        b->get(), nullptr, b->type,
                                         &manifold);
 
                         if (manifold.count > 0) {
@@ -61,15 +64,6 @@ void Collider::update()
                                 solveCollision(a, b, manifold);
                         }
                 }
-        }
-}
-
-void Collider::draw(sf::RenderTarget& target)
-{
-        Tinyc2Debug debug(target);
-
-        for (auto& ptr : circleBodies) {
-                debug.draw(ptr->body);
         }
 }
 
