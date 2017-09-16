@@ -36,10 +36,58 @@ const void* CircleBody::get()
 }
 
 
+AabbBody::AabbBody(float w, float h, float x, float y, bool dynamic)
+        : Body(C2_AABB, dynamic)
+{
+        body.min = c2V(x, y);
+        body.max = c2V(x + w, y + h);
+}
+
+void AabbBody::move(float x, float y)
+{
+        body.min.x += x;
+        body.min.y += y;
+        body.max.x += x;
+        body.max.y += y;
+}
+
+void AabbBody::moveTo(float x, float y)
+{
+        float w = body.max.x - body.min.x;
+        float h = body.max.y - body.min.y;
+        body.min = c2V(x, y);
+        body.max = c2V(x + w, y + h);
+}
+
+float AabbBody::getX()
+{
+        return body.min.x;
+}
+
+float AabbBody::getY()
+{
+        return body.min.y;
+}
+
+const void* AabbBody::get()
+{
+        return &body;
+}
+
+
 std::shared_ptr<CircleBody> Collider::createCircleBody(float r, float x,
                 float y)
 {
         auto body = std::make_shared<CircleBody>(r, x, y);
+
+        bodies.push_back(body);
+        return body;
+}
+
+std::shared_ptr<AabbBody> Collider::createAabbBody(float w, float h, float x,
+                float y)
+{
+        auto body = std::make_shared<AabbBody>(w, h, x, y);
 
         bodies.push_back(body);
         return body;

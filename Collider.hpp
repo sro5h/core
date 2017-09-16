@@ -37,10 +37,25 @@ public:
         c2Circle body;
 };
 
+class AabbBody : public Body {
+public:
+        AabbBody(float w, float h, float x, float y, bool dynamic = false);
+
+        void move(float x, float y);
+        void moveTo(float x, float y);
+
+        float getX();
+        float getY();
+
+        const void* get();
+
+        c2AABB body;
+};
 
 class Collider {
 public:
         std::shared_ptr<CircleBody> createCircleBody(float r, float x, float y);
+        std::shared_ptr<AabbBody> createAabbBody(float w, float h, float x, float y);
 
         void update();
 

@@ -20,6 +20,7 @@ int main(int argc, char* argv[])
         Collider collider;
 
         auto staticBody = collider.createCircleBody(64, 100, 100);
+        auto aabbBody = collider.createAabbBody(50, 50, -100, -100);
         auto movingBody = collider.createCircleBody(16, 0, 0);
         movingBody->dynamic = true;
 
@@ -56,6 +57,7 @@ int main(int argc, char* argv[])
 
                 window.clear(sf::Color(30, 30, 30));
                 debug.draw(staticBody->body);
+                debug.draw(aabbBody->body);
                 debug.draw(movingBody->body);
                 window.display();
         }
