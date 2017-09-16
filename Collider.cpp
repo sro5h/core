@@ -118,11 +118,11 @@ void Collider::update()
 void Collider::solveCollision(std::shared_ptr<Body> a, std::shared_ptr<Body> b,
                 const c2Manifold& manifold)
 {
+        c2v toMove = c2Mulvs(manifold.normal, manifold.depths[0]);
+
         if (a->dynamic && !b->dynamic) {
-                a->move(-manifold.normal.x * manifold.depths[0],
-                                -manifold.normal.y * manifold.depths[0]);
+                a->move(-toMove.x, -toMove.y);
         } else if (!a->dynamic && b->dynamic) {
-                b->move(+manifold.normal.x * manifold.depths[0],
-                                +manifold.normal.y * manifold.depths[0]);
+                b->move(toMove.x, toMove.y);
         }
 }
