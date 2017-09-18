@@ -74,11 +74,13 @@ public:
 
         void draw(const c2v& point, sf::Color color = sf::Color::White)
         {
-                sf::Vertex shape[] = {
-                        sf::Vertex(sf::Vector2f(point.x, point.y), color)
-                };
+                sf::CircleShape shape(1);
 
-                mTarget.draw(shape, 1, sf::Points);
+                shape.setOrigin(1, 1);
+                shape.setPosition(point.x, point.y);
+                shape.setFillColor(color);
+
+                mTarget.draw(shape);
         }
 
         void draw(const c2Manifold& manifold, sf::Color color = sf::Color::White)
