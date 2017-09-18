@@ -18,6 +18,31 @@ std::shared_ptr<AabbBody> Collider::createAabbBody(float w, float h, float x,
         return body;
 }
 
+Raycast Collider::raycast(float x, float y, float dx, float dy, float t)
+{
+        c2Ray ray;
+        ray.p = c2V(x, y);
+        ray.d = c2Norm(c2V(dx, dy));
+        ray.t = t;
+
+        Raycast result;
+
+        for (auto body : bodies) {
+                c2Raycast cast;
+                if (c2CastRay(ray, body->get(), nullptr, body->type, &cast)) {
+                        if (cast.t < result.t || result.t == -1) {
+                                result.hit = true;
+                                result.t = cast.t;
+                                c2v impact = c2Impact(ray, cast.t);
+                                result.x = impact.x;
+                                result.y = impact.y;
+                        }
+                }
+        }
+
+        return result;
+}
+
 void Collider::update()
 {
         manifolds.clear();

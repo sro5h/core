@@ -19,6 +19,8 @@ int main(int argc, char* argv[])
         Tinyc2Debug debug(window);
         Collider collider;
 
+        Raycast cast;
+
         auto staticBody = collider.createCircleBody(64, 100, 100);
         auto aabbBody = collider.createAabbBody(50, 50, -100, -100);
         auto movingBody = collider.createCircleBody(16, 0, 0);
@@ -46,6 +48,13 @@ int main(int argc, char* argv[])
                 while (lag >= MC_PER_TICK) {
                         processInput(movingBody);
 
+                        sf::Vector2f mousePos = window.mapPixelToCoords(
+                                        sf::Mouse::getPosition(window));
+                        cast = collider.raycast(movingBody->getX(),
+                                        movingBody->getY(),
+                                        mousePos.x - movingBody->getX(),
+                                        mousePos.y - movingBody->getY(), 1000);
+
                         collider.update();
 
                         lag -= MC_PER_TICK;
@@ -59,6 +68,9 @@ int main(int argc, char* argv[])
                 debug.draw(staticBody->body);
                 debug.draw(aabbBody->body);
                 debug.draw(movingBody->body);
+                if (cast.hit) {
+                        debug.draw(c2V(cast.x, cast.y), sf::Color::Red);
+                }
                 window.display();
         }
 
