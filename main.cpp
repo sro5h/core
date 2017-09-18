@@ -6,6 +6,7 @@
 #include "Collider.hpp"
 
 #define MC_PER_TICK 15625
+#define SPEED 1.5
 
 void processInput(std::shared_ptr<Body> body);
 
@@ -83,7 +84,7 @@ void processInput(std::shared_ptr<Body> body)
         }
 
         if (toMove.x != 0 || toMove.y != 0) {
-                toMove = c2Mulvs(c2Norm(toMove), 2);
+                toMove = c2Mulvs(c2Norm(toMove), SPEED);
                 body->move(toMove.x, toMove.y);
         }
 }
