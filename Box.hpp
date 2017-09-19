@@ -7,21 +7,10 @@
 
 class Box : public Entity {
 public:
-        Box(Collider& collider, float x, float y)
-        {
-                body = collider.createAabbBody(64, 64, x, y);
-        }
+        Box(Collider& collider, float x, float y);
 
-        void update()
-        {
-        }
-
-        void draw(sf::RenderTarget& target)
-        {
-                DebugDraw debug(target);
-                debug.drawRect(body->getWidth(), body->getHeight(),
-                                body->getX(), body->getY(), sf::Color::White);
-        }
+        void update();
+        void draw(sf::RenderTarget& target);
 
 private:
         std::shared_ptr<AabbBody> body;
