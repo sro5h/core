@@ -1,21 +1,30 @@
 #include "Collider.hpp"
 
-std::shared_ptr<CircleBody> Collider::createCircleBody(float r, float x,
-                float y)
+void Collider::update()
 {
-        auto body = std::make_shared<CircleBody>(r, x, y);
+        manifolds.clear();
 
-        bodies.push_back(body);
-        return body;
+        for (int i = 0; i < bodies.size(); ++i) {
+                for (int j = i + 1; j < bodies.size(); ++j) {
+                        auto a = bodies[i];
+                        auto b = bodies[j];
+
+                        c2Manifold manifold;
+                        c2Collide(a->get(), nullptr, a->type,
+                                        b->get(), nullptr, b->type,
+                                        &manifold);
+
+                        if (manifold.count > 0) {
+                                manifolds.push_back(manifold);
+                                solveCollision(a, b, manifold);
+                        }
+                }
+        }
 }
 
-std::shared_ptr<AabbBody> Collider::createAabbBody(float w, float h, float x,
-                float y)
+void Collider::registerBody(std::shared_ptr<Body> body)
 {
-        auto body = std::make_shared<AabbBody>(w, h, x, y);
-
         bodies.push_back(body);
-        return body;
 }
 
 Raycast Collider::raycast(float x, float y, float dx, float dy, float t)
@@ -41,28 +50,6 @@ Raycast Collider::raycast(float x, float y, float dx, float dy, float t)
         }
 
         return result;
-}
-
-void Collider::update()
-{
-        manifolds.clear();
-
-        for (int i = 0; i < bodies.size(); ++i) {
-                for (int j = i + 1; j < bodies.size(); ++j) {
-                        auto a = bodies[i];
-                        auto b = bodies[j];
-
-                        c2Manifold manifold;
-                        c2Collide(a->get(), nullptr, a->type,
-                                        b->get(), nullptr, b->type,
-                                        &manifold);
-
-                        if (manifold.count > 0) {
-                                manifolds.push_back(manifold);
-                                solveCollision(a, b, manifold);
-                        }
-                }
-        }
 }
 
 void Collider::solveCollision(std::shared_ptr<Body> a, std::shared_ptr<Body> b,

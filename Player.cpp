@@ -3,8 +3,9 @@
 Player::Player(Collider& collider)
         : speed(1.5)
 {
-        body = collider.createCircleBody(16, 0, 0);
+        body = std::make_shared<CircleBody>(16, 0, 0);
         body->dynamic = true;
+        collider.registerBody(body);
 }
 
 void Player::update()

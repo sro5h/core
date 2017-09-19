@@ -2,7 +2,8 @@
 
 Box::Box(Collider& collider, float x, float y)
 {
-        body = collider.createAabbBody(64, 64, x, y);
+        body = std::make_shared<AabbBody>(64, 64, x, y);
+        collider.registerBody(body);
 }
 
 void Box::update() {}

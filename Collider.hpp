@@ -16,12 +16,9 @@ struct Raycast {
 
 class Collider {
 public:
-        std::shared_ptr<CircleBody> createCircleBody(float r, float x, float y);
-        std::shared_ptr<AabbBody> createAabbBody(float w, float h, float x, float y);
-
-        Raycast raycast(float x, float y, float dx, float dy, float t);
-
         void update();
+        void registerBody(std::shared_ptr<Body> body);
+        Raycast raycast(float x, float y, float dx, float dy, float t);
 
 private:
         void solveCollision(std::shared_ptr<Body> a, std::shared_ptr<Body> b,
