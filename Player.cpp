@@ -16,7 +16,7 @@ void Player::draw(sf::RenderTarget& target)
 {
         DebugDraw debug(target);
         debug.drawCircle(body->getRadius(),
-                        body->getX(), body->getY(), sf::Color::Blue);
+                        body->getX(), body->getY(), sf::Color::Yellow);
 }
 
 void Player::handleInput()

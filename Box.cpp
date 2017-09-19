@@ -11,5 +11,5 @@ void Box::draw(sf::RenderTarget& target)
 {
         DebugDraw debug(target);
         debug.drawRect(body->getWidth(), body->getHeight(),
-                        body->getX(), body->getY(), sf::Color::White);
+                        body->getX(), body->getY(), sf::Color::Red);
 }
