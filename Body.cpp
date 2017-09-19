@@ -35,6 +35,11 @@ const void* CircleBody::get()
         return &body;
 }
 
+float CircleBody::getRadius()
+{
+        return body.r;
+}
+
 
 AabbBody::AabbBody(float w, float h, float x, float y, bool dynamic)
         : Body(C2_AABB, dynamic)
@@ -72,4 +77,14 @@ float AabbBody::getY()
 const void* AabbBody::get()
 {
         return &body;
+}
+
+float AabbBody::getWidth()
+{
+        return body.max.x - body.min.x;
+}
+
+float AabbBody::getHeight()
+{
+        return body.max.y - body.min.y;
 }

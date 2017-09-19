@@ -24,14 +24,17 @@ class CircleBody : public Body {
 public:
         CircleBody(float r, float x, float y, bool dynamic = false);
 
-        void move(float x, float y);
-        void moveTo(float x, float y);
+        virtual void move(float x, float y);
+        virtual void moveTo(float x, float y);
 
-        float getX();
-        float getY();
+        virtual float getX();
+        virtual float getY();
 
-        const void* get();
+        virtual const void* get();
 
+        float getRadius();
+
+private:
         c2Circle body;
 };
 
@@ -39,14 +42,18 @@ class AabbBody : public Body {
 public:
         AabbBody(float w, float h, float x, float y, bool dynamic = false);
 
-        void move(float x, float y);
-        void moveTo(float x, float y);
+        virtual void move(float x, float y);
+        virtual void moveTo(float x, float y);
 
-        float getX();
-        float getY();
+        virtual float getX();
+        virtual float getY();
 
-        const void* get();
+        virtual const void* get();
 
+        float getWidth();
+        float getHeight();
+
+private:
         c2AABB body;
 };
 
